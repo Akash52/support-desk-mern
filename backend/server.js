@@ -8,6 +8,8 @@ app.get('/', (req, res) => {
   res.status(201).json({ message: 'Welcome to Support Desk!' });
 });
 
+app.use('/api/users', require('./routes/userRoutes'));
+
 app.listen(PORT, () => {
   console.log(
     `Server is running on port ${PORT} mode is ${process.env.NODE_ENV}`
