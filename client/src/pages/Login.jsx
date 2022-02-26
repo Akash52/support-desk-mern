@@ -1,6 +1,8 @@
 import React from 'react';
 import { FaSignInAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../features/auth/authSlice';
 
 function Login() {
   const [formData, setFormData] = React.useState({
@@ -14,9 +16,25 @@ function Login() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (e) => {};
-
   const { email, password } = formData;
+  const dispatch = useDispatch();
+  const { user, isSuccess, isLoading, message, isError } = useSelector(
+    (state) => state.auth
+  );
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (password.trim().length < 6) {
+      toast.error('Password must be at least 6 characters');
+    } else {
+      const userData = {
+        email,
+        password,
+      };
+      dispatch(login(userData));
+    }
+  };
+
   return (
     <>
       <section className='heading'>
