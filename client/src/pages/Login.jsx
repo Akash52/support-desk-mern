@@ -10,8 +10,6 @@ function Login() {
     password: '',
   });
 
-  console.log(formData);
-
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -70,7 +68,7 @@ function Login() {
             />
           </div>
           <div className='form-group'>
-            <button className='btn btn btn-block'>Register</button>
+            <button className='btn btn btn-block'>Login</button>
           </div>
         </form>
       </section>

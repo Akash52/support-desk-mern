@@ -2,7 +2,8 @@ import React from 'react';
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import { register } from '../features/auth/authSlice';
+import { register, reset } from '../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
   const [formData, setFormData] = React.useState({
@@ -11,6 +12,24 @@ function Register() {
     password: '',
     password2: '',
   });
+
+  const { name, email, password, password2 } = formData;
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, isSuccess, isLoading, message, isError } = useSelector(
+    (state) => state.auth
+  );
+
+  React.useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSuccess || user) {
+      navigate('/');
+    }
+    dispatch(reset());
+  }, [isError, isSuccess, user, message, navigate, dispatch]);
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,11 +49,6 @@ function Register() {
     }
   };
 
-  const { name, email, password, password2 } = formData;
-  const dispatch = useDispatch();
-  const { user, isSuccess, isLoading, message, isError } = useSelector(
-    (state) => state.auth
-  );
   return (
     <>
       <section className='heading'>
