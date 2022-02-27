@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { register, reset } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../components/Spinner';
 
 function Register() {
   const [formData, setFormData] = React.useState({
@@ -39,6 +40,8 @@ function Register() {
     e.preventDefault();
     if (password !== password2) {
       toast.error('Passwords do not match');
+    } else if (password.trim().length < 6) {
+      toast.error('Password must be at least 6 characters');
     } else {
       const userData = {
         name,
@@ -48,6 +51,10 @@ function Register() {
       dispatch(register(userData));
     }
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
